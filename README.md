@@ -5,4 +5,11 @@ MyAutoClick is created using AutoHotKey scripts (https://www.autohotkey.com/). Y
 
 When building the applications, I used Red.ico as the application icon for MyAutoClick Parameters.exe and Green.ico as the application icon for MyAutoClick.exe.  Those two icons are also used to differentiate between MyAutoClick being inactive (red) or active (green).
 
+AutoHotKey is not needed to run the executables on another Windows machine.  The only files you need to copy to the Windows machine are:
+- MyAutoClick Parameters.exe
+- MyAutoClick.exe
+- Green.ico
+- Red.ico
+Place these 4 files in a folder on the machine.  Then create shortcuts to MyAutoClick Parameters.exe and MyAutoClick.exe on the Windows desktop.
+
 Please read the Read.me file for more information on how to use MyAutoClick Parameters.exe and MyAutoClick.exe.
