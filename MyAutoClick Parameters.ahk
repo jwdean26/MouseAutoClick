@@ -4,22 +4,34 @@ if FileExist("MyAutoClick.ini")
     IniRead, WaitTime, MyAutoClick.ini, Settings, WaitTime
     IniRead, PollingTime, MyAutoClick.ini, Settings, PollingTime
     IniRead, Hkey, MyAutoClick.ini, Settings, Hotkey
+    IniRead, MouseClick, MyAutoClick.ini, Settings, MouseClick
 }
+
+MouseClickList := "Left|Right|Double"
+if (MouseClick = "Right")
+    ChooseNum := 2
+else if (MouseClick = "Double")
+    ChooseNum := 3
+else
+    ChooseNum := 1 ; default to Left if blank/unrecognized
 
 Gui +Resize
 Gui, Font, s14 w700, Arial
 Gui, Add, Text, vLbl1, Please enter the wait time (in milliseconds) the mouse cursor must pause before an autoclick occurs:
-Gui, Add, Text, vLbl2, Example: 1000 = 1 second
+Gui, Add, Text, vLbl2 y+2, Example: 1000 = 1 second
+Gui, Add, Edit, vWaitTime w200, %WaitTime%
+
 Gui, Add, Text, vLbl3, Please enter the time (in milliseconds) MyAutoClick checks to see if the mouse cursor is moving or stationary:
-Gui, Add, Text, vLbl4, 10 milliseconds should be a good time for most systems.
-Gui, Add, Text, vLbl5, Please enter the hotkey sequence used to toggle MyAutoClick on and off:
-Gui, Add, Text, vLbl6, Examples: F10, Shift+Ctrl+Alt+S, etc.
-Gui, Add, Edit, vWaitTime ym w200, %WaitTime%
-Gui, Add, Text,,
+Gui, Add, Text, vLbl4 y+2, 10 milliseconds should be a good time for most systems.
 Gui, Add, Edit, vPollingTime w200, %PollingTime%
-Gui, Add, Text,,
+
+Gui, Add, Text, vLbl5, Please enter the hotkey sequence used to toggle MyAutoClick on and off:
+Gui, Add, Text, vLbl6 y+2, Examples: F10, Shift+Ctrl+Alt+S, etc.
 Gui, Add, Hotkey, vHkey w200, %Hkey%
-Gui, Add, Text,,
+
+Gui, Add, Text, vLbl7, Please select Mouse Click type (Left, Right, or Double).
+Gui, Add, DDL, vMouseClick w200 Choose%ChooseNum%, %MouseClickList%
+
 Gui, Add, Button, vBtnOK default, OK
 Gui, Show, AutoSize Center, MyAutoClick Parameters
 
@@ -30,9 +42,11 @@ GuiControlGet, OrigLbl3, Pos, Lbl3
 GuiControlGet, OrigLbl4, Pos, Lbl4
 GuiControlGet, OrigLbl5, Pos, Lbl5
 GuiControlGet, OrigLbl6, Pos, Lbl6
+GuiControlGet, OrigLbl7, Pos, Lbl7
 GuiControlGet, OrigWaitTime, Pos, WaitTime
 GuiControlGet, OrigPollingTime, Pos, PollingTime
 GuiControlGet, OrigHkey, Pos, Hkey
+GuiControlGet, OrigMouseClick, Pos, MouseClick
 GuiControlGet, OrigBtnOK, Pos, BtnOK
 WinGetPos, , , OrigWinW, OrigWinH, A
 return
@@ -40,11 +54,8 @@ return
 GuiSize:
 if (A_EventInfo = 1) ; ignore minimize
     return
-
 newW := A_GuiWidth
 newH := A_GuiHeight
-
-; Enforce a minimum size ourselves — snap back up if shrunk too far
 needSnap := false
 if (newW < OrigWinW)
 {
@@ -58,22 +69,20 @@ if (newH < OrigWinH)
 }
 if (needSnap)
     WinMove, A, , , , %newW%, %newH%
-
 deltaW := newW - OrigWinW
 deltaH := newH - OrigWinH
-
 GuiControl, Move, Lbl1,        % "w" (OrigLbl1W + deltaW)
 GuiControl, Move, Lbl2,        % "w" (OrigLbl2W + deltaW)
 GuiControl, Move, Lbl3,        % "w" (OrigLbl3W + deltaW)
 GuiControl, Move, Lbl4,        % "w" (OrigLbl4W + deltaW)
 GuiControl, Move, Lbl5,        % "w" (OrigLbl5W + deltaW)
 GuiControl, Move, Lbl6,        % "w" (OrigLbl6W + deltaW)
+GuiControl, Move, Lbl7,        % "w" (OrigLbl7W + deltaW)
 GuiControl, Move, WaitTime,    % "w" (OrigWaitTimeW + deltaW)
 GuiControl, Move, PollingTime, % "w" (OrigPollingTimeW + deltaW)
 GuiControl, Move, Hkey,        % "w" (OrigHkeyW + deltaW)
-
+GuiControl, Move, MouseClick,  % "w" (OrigMouseClickW + deltaW)
 GuiControl, Move, BtnOK, % "y" (OrigBtnOKY + deltaH)
-
 return
 
 ButtonOK:
@@ -89,6 +98,9 @@ If ErrorLevel
 IniWrite, %Hkey%, MyAutoClick.ini, Settings, Hotkey
 If ErrorLevel
 	MsgBox, There was an error writing Hkey to MyAutoClick.ini file.
+IniWrite, %MouseClick%, MyAutoClick.ini, Settings, MouseClick
+If ErrorLevel
+	MsgBox, There was an error writing MouseClick to MyAutoClick.ini file.
 }
 GuiEscape:
 GuiClose:

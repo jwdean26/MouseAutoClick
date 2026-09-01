@@ -11,6 +11,7 @@ CoordMode Mouse
 IniRead WaitTime, MyAutoClick.ini, Settings, WaitTime
 IniRead PollingTime, MyAutoClick.ini, Settings, PollingTime
 IniRead Hkey, MyAutoClick.ini, Settings, Hotkey
+IniRead MouseClick, MyAutoClick.ini, Settings, MouseClick
 
 Hotkey %Hkey%, runMyAutoClick
 Toggle := False ;Initialize MyAutoClick off
@@ -41,7 +42,20 @@ Loop
 		if (!ClickedAlready and !MouseMoved(WaitTime - PollingTime))
 		{
 			ClickedAlready := True
-			Click
+			IniRead MouseClick, MyAutoClick.ini, Settings, MouseClick
+
+			if (MouseClick = "Right")
+			{
+				Click, Right
+			}
+			else if (MouseClick = "Double")
+			{
+				Click, 2
+			}
+			else
+			{
+				Click
+			}
 		}
 	} else 
 	{
