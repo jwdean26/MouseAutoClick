@@ -10,6 +10,7 @@ AutoHotKey is not needed to run the executables on another Windows machine.  The
 - MyAutoClick.exe
 - Green.ico
 - Red.ico
+
 Place these 4 files in a folder on the machine.  Then create shortcuts to MyAutoClick Parameters.exe and MyAutoClick.exe on the Windows desktop.
 
 Please read the Read.me file for more information on how to use MyAutoClick Parameters.exe and MyAutoClick.exe.
