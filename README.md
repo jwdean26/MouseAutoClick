@@ -1,4 +1,4 @@
-# MouseAutoLeftClick
+# MouseAutoClick
 Set up to autoclick the left mouse button on Windows 10 or 11.
 
 MyAutoClick is created using AutoHotKey scripts (https://www.autohotkey.com/). You must install AutoHotKey (v1) to compile/build the MyAutoClick Parameters.ahk and MyAutoClick.ahk files.  Doing this will create the MyAutoClick Parameters.exe and MyAutoClick.exe applications.
